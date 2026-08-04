@@ -16,6 +16,10 @@ def init():
         os.mkdir("code")
     except:
         pass
+	try: 
+        os.mkdir(os.path.join(".guides", "secure"))
+    except:
+        pass
     try: 
         os.mkdir(os.path.join(".guides", "secure", "key"))
     except:
@@ -230,4 +234,5 @@ else:
 
 {{Check It!|assessment}}({testid})""")
 
+init()
 exercise()
