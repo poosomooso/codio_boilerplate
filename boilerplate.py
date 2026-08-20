@@ -16,7 +16,7 @@ def init():
         os.mkdir("code")
     except:
         pass
-	try: 
+    try: 
         os.mkdir(os.path.join(".guides", "secure"))
     except:
         pass
@@ -96,6 +96,12 @@ student_code = os.path.join(path, file)
 
 key_code = os.path.join(".guides", "secure", "key", "{fname}_key.py")
 
+def call_program(file, input_txt):
+  try:
+      student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
+      return student_output
+  except subprocess.CalledProcessError as e:
+    return e.output.strip().decode("utf-8")
 
 def print_input_check(label, input_txt, diff):
   print(label + " ---------------------")
@@ -110,8 +116,8 @@ def print_input_check(label, input_txt, diff):
 
 def check_output(file):
   input_txt = b"19\\n"
-  student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
-  actual_output = subprocess.check_output(["python3", key_code], input=input_txt, timeout=120).strip().decode("utf-8")
+  student_output = call_program(file, input_txt)
+  actual_output = call_program(key_code, input_txt)
   diff = unified_diff(actual_output.splitlines(), student_output.splitlines(), lineterm='', n=10)
   print_input_check("Test 0", input_txt, diff)
   return student_output == actual_output
@@ -119,8 +125,8 @@ def check_output(file):
 
 def test1(file):
   input_txt = b"16\\n"
-  student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
-  actual_output = subprocess.check_output(["python3", key_code], input=input_txt, timeout=120).strip().decode("utf-8")
+  student_output = call_program(file, input_txt)
+  actual_output = call_program(key_code, input_txt)
   diff = unified_diff(actual_output.splitlines(), student_output.splitlines(), lineterm='', n=10)
   print_input_check("Test 1", input_txt, diff)
   return student_output == actual_output
@@ -128,16 +134,16 @@ def test1(file):
 
 def test2(file):
   input_txt = b"18\\n"
-  student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
-  actual_output = subprocess.check_output(["python3", key_code], input=input_txt, timeout=120).strip().decode("utf-8")
+  student_output = call_program(file, input_txt)
+  actual_output = call_program(key_code, input_txt)
   diff = unified_diff(actual_output.splitlines(), student_output.splitlines(), lineterm='', n=10)
   print_input_check("Test 2", input_txt, diff)
   return student_output == actual_output
 
 def test3(file):
   input_txt = b"27\\n"
-  student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
-  actual_output = subprocess.check_output(["python3", key_code], input=input_txt, timeout=120).strip().decode("utf-8")
+  student_output = call_program(file, input_txt)
+  actual_output = call_program(key_code, input_txt)
   print("Test 3:")
   print("(hidden)")
   print()
@@ -145,8 +151,8 @@ def test3(file):
 
 def test4(file):
   input_txt = b"12\\n"
-  student_output = subprocess.check_output(["python3", file], input=input_txt, timeout=120).strip().decode("utf-8")
-  actual_output = subprocess.check_output(["python3", key_code], input=input_txt, timeout=120).strip().decode("utf-8")
+  student_output = call_program(file, input_txt)
+  actual_output = call_program(key_code, input_txt)
   print("Test 4:")
   print("(hidden)")
   print()
