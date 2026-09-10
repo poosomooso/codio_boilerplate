@@ -158,6 +158,16 @@ def test4(file):
   print()
   return student_output == actual_output
 
+def no_break_continue(file):
+  with open(file, "r") as code_to_check:
+    for line in code_to_check.readlines():
+      line = line.strip()
+      if line == "break":
+        return False
+      if line == "continue":
+        return False
+  return True
+
 def has_ifelse(file):
   hasif = False
   haselse = False
@@ -184,7 +194,10 @@ if not has_ifelse(student_code):
   print("Program should use if and else statements")
   failed = True
 
-
+if not no_break_continue(student_code):
+  print("<h2>Test did not pass</h2>")
+  print("Program should not use `break` or `continue` statements")
+  failed = True
 
 if not failed:
   print("<h2>Test passed!</h2>")
