@@ -119,7 +119,7 @@ def gen_mcq(question_num):
     with open(mcqname, "w") as f:
         f.write(mcq_deets)
 
-    md_content = f'''{{Check It!|assessment}}({mcq_filestem})'''
+    md_content = f'''{{Submit Answer|assessment}}({mcq_filestem})'''
     mdname = os.path.join(content_path, filestem+".md")
     with open(mdname, "w") as f:
         f.write(md_content)
@@ -193,7 +193,7 @@ def gen_frq(question_num):
     with open(mcqname, "w") as f:
         f.write(frq_deets)
 
-    md_content = f'''{{Check It!|assessment}}({frq_filestem})'''
+    md_content = f'''{{Submit Answer|assessment}}({frq_filestem})'''
     mdname = os.path.join(content_path, filestem+".md")
     with open(mdname, "w") as f:
         f.write(md_content)
