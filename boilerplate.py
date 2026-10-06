@@ -1,29 +1,35 @@
 # must be run from root directory
+import uuid 
 
 ### params
 
 title = "Table Reservations"
 fname = "table"
-testid = "test-2205381053"
-guidePageFname = "Table-reservations-d2cd"
+id = str(uuid.uuid4())
+testid = f"test-{id[0:8]}00"
+guidePageFname = f"{fname}-guide"
 hasInput = True
 
 import os, json
 
+assessment_path = os.path.join(".guides", "assessments")
+content_path = os.path.join(".guides", "content")
 
 def init():
-    try:
-        os.mkdir("code")
-    except:
-        pass
-    try: 
-        os.mkdir(os.path.join(".guides", "secure"))
-    except:
-        pass
-    try: 
-        os.mkdir(os.path.join(".guides", "secure", "key"))
-    except:
-        pass
+    paths = [
+        "code",
+        assessment_path,
+        content_path,
+        os.path.join(".guides", "secure"),
+        os.path.join(".guides", "secure", "key")
+    ]
+    for p in paths:
+        try:
+            os.mkdir(p)
+        except:
+            pass
+
+    
 
 def exercise():
     """
@@ -213,38 +219,59 @@ else:
     with open(os.path.join(".guides", "secure", "key", f"{fname}_key.py"), "w") as f:
         pass
 
-    with open(os.path.join(".guides", "content", guidePageFname + ".json"), "r+") as f:
-        data = json.load(f)
+    with open(os.path.join(".guides", "content", guidePageFname + ".json"), "w") as f:
         if hasInput:
-            data["files"] = [ {
-			"path": "#tabs",
-			"action": "close"
-		},
-		{
-			"path": f"code/{fname}.py",
-			"panel": 0,
-			"action": "open"
-		},
-		{
-			"path": "#terminal: ",
-			"panel": 1,
-			"action": "open"
-		}]
-            data["layout"] = "3-cell"
+            data = f"""{{
+  "id": "{id}",
+  "title": "{title}",
+  "files": [
+    {{
+      "path": "#tabs",
+      "action": "close"
+    }},
+    {{
+      "path": "code/{fname}.py",
+      "panel": 0,
+      "action": "open"
+    }},
+    {{
+      "path": "#terminal: ",
+      "panel": 1,
+      "action": "open"
+    }}
+  ],
+  "layout": "3-cell",
+  "path": [],
+  "type": "page",
+  "contentType": "markdown",
+  "teacherOnly": false,
+  "closeTerminalSession": true,
+  "learningObjectives": ""
+}}"""
         else:
-            data["files"] = [ {
-                        "path": "#tabs",
-                        "action": "close"
-                    },
-                    {
-                        "path": f"code/{fname}.py",
-                        "panel": 0,
-                        "action": "open"
-                    }
-            ]
-            data["layout"] = "2-panels"
-        f.seek(0)
-        json.dump(data, f)
+            data = f"""{{
+  "id": "{id}",
+  "title": "{title}",
+  "files": [
+    {{
+      "path": "#tabs",
+      "action": "close"
+    }},
+    {{
+      "path": "code/{fname}.py",
+      "panel": 0,
+      "action": "open"
+    }},
+  ],
+  "layout": "2-panels",
+  "path": [],
+  "type": "page",
+  "contentType": "markdown",
+  "teacherOnly": false,
+  "closeTerminalSession": true,
+  "learningObjectives": ""
+}}"""
+        f.write(data)
 
     with open(os.path.join(".guides", "content", guidePageFname + ".md"), "w") as f:
         f.write(f"""Use the button below to test your code before submitting it.
@@ -255,3 +282,9 @@ else:
 
 init()
 exercise()
+
+with open(os.path.join(content_path, "index.json"), "r+") as f:
+        data = json.load(f)
+        data["order"].append(guidePageFname)
+        f.seek(0)
+        json.dump(data, f, indent=2)
