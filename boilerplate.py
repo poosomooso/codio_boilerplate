@@ -261,7 +261,7 @@ else:
       "path": "code/{fname}.py",
       "panel": 0,
       "action": "open"
-    }},
+    }}
   ],
   "layout": "2-panels",
   "path": [],
